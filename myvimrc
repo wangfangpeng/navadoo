@@ -1,0 +1,85 @@
+set nocompatible
+
+colorscheme murphy " color scheme
+
+filetype plugin indent on " detect file type
+
+set background=dark
+
+if has("syntax")
+	syntax on " highlight
+endif
+
+if has("autocmd")
+	au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+	" 打开文件后跳转到最后已知的文件位置
+endif
+
+set autowrite		" auto write back
+set autoindent		" auto indent
+set smartindent		" set smart indent
+set tabstop=4		" set tab=4
+set softtabstop=4	" set softtab=4
+set shiftwidth=4	" 缩进使用的4个空格
+set cindent			" 使用C/C++语言的自动缩进方式
+set cinoptions={0,1s,t0,n-2,p2s,(03s,=.5s,>1s,=1s,:1s "设置C/C++语言的具体缩进方式
+set backspace=2		" 设置退格键可用
+set showmatch		" 设置匹配模式，显示匹配的括号
+set linebreak		" 整词换行
+set whichwrap=b,s,<,>,[,]	" 光标从行首和行末时可以跳到另一行去
+set history=50		" set command history to 50
+set laststatus=2	" 总显示最后一个窗口的状态行
+set ruler			" 标尺，用于显示光标位置的行号和列号，逗号分隔
+set showcmd			" 命令行显示输入的命令
+set showmode		" 命令行显示vim当前模式
+set incsearch		" 输入字符串就显示匹配点
+set hlsearch		" 搜索逐字符高亮
+
+
+"--ctags setting--
+" 按下F5重新生成tag文件，并更新taglist
+map <F5> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR><CR> :TlistUpdate<CR>
+imap <F5> <ESC>:!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR><CR> :TlistUpdate<CR>
+set tags=tags;
+set tags+=./tags
+set autochdir
+
+"--taglist setting--
+let Tlist_Ctags_Cmd='/usr/bin/ctags'  "set ctags path
+let Tlist_Auto_Open=1		"set auto open taglist window or not
+let Tlist_Use_Right_Window=0 "let taglist window at right or not
+let Tlist_Show_One_File=0	"set only display one file tag or not
+let Tlist_File_Fold_Auto_Close=1 "非当前文件，函数列表折叠隐藏
+let Tlist_Exit_OnlyWindow=1	"set exit vim when only taglist
+let Tlist_Process_File_Always=1 "update tags realtime
+let Tlist_WinHeight=100	"set taglist window H+w
+let Tlist_WinWidth=40
+"set open taglist hotkey
+noremap <F8> :TlistToggle<CR>	
+""set flush ctags hotkey
+noremap <F6> :!ctags -R<CR>	
+
+" --cscope setting --
+if has("cscope")
+	set csprg=/usr/bin/cscope " 指定用来执行cscope的命令
+	set csto=1 " 设置cstag命令查找次序：0先找cscope数据库再找标签文件；1先找标签文件再找cscope数据库
+	set cst " 同时搜索cscope数据库和标签文件
+	set nocsverb
+	if filereadable("cscope.out") " 若当前目录下存在cscope数据库，添加该数据库到vim
+		cs add cscope.out
+	elseif $CSCOPE_DB != "" " 否则只要环境变量CSCOPE_DB不为空，则添加其指定的数据库到vim
+		cs add $CSCOPE_DB
+	endif
+	set csverb
+endif
+map <F4> :cs add ./cscope.out .<CR><CR><CR> :cs reset<CR>
+imap <F4> <ESC>:cs add ./cscope.out .<CR><CR><CR> :cs reset<CR>
+" 将:cs find c等Cscope查找命令映射为<C-_>c等快捷键（按法是先按Ctrl+Shift+-,然后很快再按下c）
+nmap <C-_>s :cs find s <C-R>=expand("<cword>")<CR><CR> :copen<CR><CR>
+nmap <C-_>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+nmap <C-_>d :cs find d <C-R>=expand("<cword>")<CR><CR> :copen<CR><CR>
+nmap <C-_>c :cs find c <C-R>=expand("<cword>")<CR><CR> :copen<CR><CR>
+nmap <C-_>t :cs find t <C-R>=expand("<cword>")<CR><CR> :copen<CR><CR>
+nmap <C-_>e :cs find e <C-R>=expand("<cword>")<CR><CR> :copen<CR><CR>
+nmap <C-_>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+nmap <C-_>i :cs find i <C-R>=expand("<cfile>")<CR><CR> :copen<CR><CR>

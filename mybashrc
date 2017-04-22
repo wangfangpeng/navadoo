@@ -1,0 +1,2 @@
+alias mkcscopefile='find `pwd` -name "*.[ch]" -o -name "*.cpp" > cscope.files'  
+alias mktag='ctags -R;cscope -bRq' 
