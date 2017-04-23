@@ -1,12 +1,10 @@
 " Incarnation P. Lee <incarnation.p.lee@gmail.com>
 " " Date: Fri Sep 26 20:43:59 CST 2014
 " " Standard C syntax
-
 let b:current_syntax = "c"
 
 " " status
 highlight StatusLine ctermbg=196 ctermfg=109
-" "highlight StatusLineNC ctermbg=164 ctermfg=196
 " " set fold color
 highlight Folded ctermbg=239 ctermfg=154
 " " set cursorcolumn color
